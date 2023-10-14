@@ -3,6 +3,7 @@ package com.veysel.controller;
 import com.veysel.repository.entity.Arac;
 import com.veysel.service.AracService;
 
+import java.util.List;
 import java.util.Optional;
 
 public class AracController {
@@ -21,5 +22,13 @@ public class AracController {
     public Optional<Arac>findById(Long id){
         return aracService.findById(id);
     }
+
+    public List<Arac>aracList(){
+        return aracService.findAll();
+    }
+
+
+
+
 
 }

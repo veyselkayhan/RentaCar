@@ -27,7 +27,7 @@ public class Kiralama {
 
     private LocalDate bitisTarihi;
 
-    private Long fiyat;
+
 
     @ManyToOne
     Kisi kisi;

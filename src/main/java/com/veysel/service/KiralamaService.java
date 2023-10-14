@@ -9,4 +9,5 @@ public class KiralamaService extends MyFactoryService<KiralamaRepository, Kirala
     public KiralamaService() {
         super(new KiralamaRepository());
     }
+
 }

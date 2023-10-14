@@ -23,7 +23,7 @@ public class Arac {
 
     private String marka;
     private String model;
-    private boolean durum;
+    private Boolean durum;
 
     @Column(nullable = false,unique = true)
     String plaka;

@@ -1,6 +1,7 @@
 package com.veysel;
 
 import com.veysel.controller.AracController;
+import com.veysel.controller.KiralamaController;
 import com.veysel.controller.KisiController;
 import com.veysel.repository.AracRepository;
 import com.veysel.repository.KiralamaRepository;
@@ -13,6 +14,7 @@ import com.veysel.utility.UtilityClass;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -46,14 +48,12 @@ public class Main {
         Kiralama kiralama= Kiralama.builder()
                 .arac(arac)
                 .kisi(kisi)
-                .fiyat(1000L)
                 .baslangicTarihi(LocalDate.now())
                 .build();
 
         Kiralama kiralama1= Kiralama.builder()
                 .arac(arac)
                 .kisi(kisi)
-                .fiyat(1000L)
                 .baslangicTarihi(LocalDate.now())
                 .build();
 
@@ -123,21 +123,18 @@ public class Main {
         boolean status=true;
         do{
             switch (afterLogin()){
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:aracAra();
-                case 7:kisiEkle();
-                case 8:aracEkle();
+                case 1:raporlamaMenusu();
+                case 2:musteriyeGoreKiraladagiAraclar();break;
+                case 3:bostaOlanAraclar();break;
+                case 4:kiradaOlanAraclar();break;
+                case 5:kiralamaYap();break;
+                case 6:aracAra();break;
+                case 7:kisiEkle();break;
+                case 8:aracEkle();break;
                 case 0:status=false;break;
 
             }
         }while (status);
-
-
-
         }
 
         UtilityClass utilityClass=new UtilityClass();
@@ -174,10 +171,74 @@ public class Main {
     }
 
     private Optional<Arac> aracAra(){
-      String plaka= utilityClass.stringDeger("Aramak Istediðiniz Aracýn Plakasýný Giriniz")
+      String plaka= utilityClass.stringDeger("Aramak Istediðiniz Aracýn Plakasýný Giriniz");
       Long aracId = new AracRepository().findByColumnNameAndValue("plaka", plaka).get(0).getId();
       return new AracController().findById(aracId);
     }
 
+
+    public void kiralamaYap(){
+
+
+        new AracController().aracList().stream().filter(arac -> arac.getDurum()==true)
+                .collect(Collectors.toList()).forEach(System.out::println);
+
+
+        int gün=utilityClass.intDeger("Arac Kiralama Gününü Giriniz");
+        int ay=utilityClass.intDeger("Arac Kiralama Ayýný Giriniz");
+        int yýl= utilityClass.intDeger("Arac Kiralama Yýlýný Giriniz");
+
+
+        Long aracId=utilityClass.longDeger("Arac Idsini Giriniz");
+
+        new KisiController().findAll().forEach(System.out::println);
+        Long id=utilityClass.longDeger("Musteri idsini Giriniz");
+
+        int gün1=utilityClass.intDeger("Arac Ýade Gününü Giriniz");
+        int ay1=utilityClass.intDeger("Arac Ýade Ayýný Giriniz");
+        int yýl1= utilityClass.intDeger("Arac Ýade Yýlýný Giriniz");
+        Kiralama kiralama= Kiralama.builder()
+                .baslangicTarihi(LocalDate.of(yýl,gün,ay))
+                .kisi(new KisiController().kisiBul(id).get())
+                .arac(new AracController().findById(aracId).get())
+                .bitisTarihi(LocalDate.of(yýl1,ay1,gün1))
+                .build();
+
+
+        new AracController().findById(aracId).get().setDurum(false);
+
+        new AracController().save(new AracController().findById(aracId).get());
+
+
+
+        if(kiralama.getArac().getDurum()==false ){
+            System.out.println("Arac Doludur Geçerli Arac Seciniz");
+            kiralamaYap();
+        }else{
+            new KiralamaController().kiralamaYap(kiralama);
+        }
+    }
+
+
+    public void kiradaOlanAraclar(){
+        new AracController().aracList().stream().filter(arac -> arac.getDurum()==false)
+                .collect(Collectors.toList()).forEach(System.out::println);
+    }
+
+    public void bostaOlanAraclar(){
+        new AracController().aracList().stream().filter(arac -> arac.getDurum()==true)
+                .collect(Collectors.toList()).forEach(System.out::println);
+    }
+
+    public void musteriyeGoreKiraladagiAraclar(){
+        new KisiController().findAll().forEach(System.out::println);
+        Long id=utilityClass.longDeger("Musteri idsini GÝriniz");
+       new KiralamaController().kiraladýgýmAraclar().stream().filter(kiralama ->
+               kiralama.getKisi().equals(new KisiController().kisiBul(id)));
+    }
+
+    public void raporlamaMenusu(){
+
+    }
 
 }
