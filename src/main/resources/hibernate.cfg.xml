@@ -17,7 +17,7 @@
                         DİKKAT!! bir uygulamada create kullanılır ise veritabanında olan veriler tamamen silinir.
               create/drop -> Her seferinde tabolar oluşturulur, uygulama kapatılırken tüm tablolar silinir.
          -->
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <!--  Hibernate bizim adımıza SQL komutlarını yazmaktadır, bu yazmakta olduğu SQL kodlarını
               konsol ekranında görebilmek için bunu aktif ederiz.
         -->

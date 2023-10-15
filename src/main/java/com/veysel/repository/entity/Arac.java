@@ -1,6 +1,8 @@
 package com.veysel.repository.entity;
 
 
+import com.veysel.enums.EMarka;
+import com.veysel.enums.EModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +26,12 @@ public class Arac {
     private String marka;
     private String model;
     private Boolean durum;
+
+    @Enumerated
+    EMarka eMarka;
+
+    @Enumerated
+    EModel eModel;
 
     @Column(nullable = false,unique = true)
     String plaka;

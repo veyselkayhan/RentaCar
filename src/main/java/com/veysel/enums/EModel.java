@@ -19,3 +19,5 @@ public enum EModel {
     XC90,
     V40,
 }
+
+

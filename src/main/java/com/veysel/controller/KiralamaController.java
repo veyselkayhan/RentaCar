@@ -1,6 +1,5 @@
 package com.veysel.controller;
 
-import com.veysel.repository.KiralamaRepository;
 import com.veysel.repository.entity.Kiralama;
 import com.veysel.service.KiralamaService;
 
@@ -18,7 +17,7 @@ public class KiralamaController {
         return kiralamaService.save(kiralama);
     }
 
-    public List<Kiralama>kiraladıgımAraclar(){
+    public List<Kiralama> findAll(){
         return kiralamaService.findAll();
     }
 
